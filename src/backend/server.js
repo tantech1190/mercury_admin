@@ -11,7 +11,8 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const compression = require('compression');
 const rateLimit = require('express-rate-limit');
-require('dotenv').config();
+// require('dotenv').config();
+require('dotenv').config({ path: __dirname + '/.env' });
 
 // Import routes
 const authRoutes = require('./routes/auth.routes');
