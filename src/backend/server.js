@@ -104,7 +104,6 @@ const connectDB = async () => {
 };
 
 // Connect to database
-connectDB();
 
 // ============================================
 // API ROUTES
@@ -176,6 +175,8 @@ const server = app.listen(PORT, "0.0.0.0", () => {
   console.log(`🔗 API Base URL: https://mercuryadmin-production.up.railway.app/api`);
   console.log(`📊 Health Check: https://mercuryadmin-production.up.railway.app/api/health`);
   console.log('='.repeat(50) + '\n');
+  connectDB();
+
 });
 
 // Handle unhandled promise rejections
