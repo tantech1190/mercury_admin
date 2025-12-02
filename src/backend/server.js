@@ -1,7 +1,6 @@
 /**
- * MERCURY MYSTERY ADMIN - BACKEND SERVER
- * ======================================
- * Main server file for Express API with MongoDB
+ * MERCURY MYSTERY ADMIN - BACKEND SERVER (Railway Optimized)
+ * ==========================================================
  */
 
 const express = require('express');
@@ -11,7 +10,6 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const compression = require('compression');
 const rateLimit = require('express-rate-limit');
-// require('dotenv').config();
 require('dotenv').config({ path: __dirname + '/.env' });
 
 // Import routes
@@ -21,106 +19,94 @@ const auditRoutes = require('./routes/audit.routes');
 const reportRoutes = require('./routes/report.routes');
 const uploadRoutes = require('./routes/upload.routes');
 const assignmentRoutes = require('./routes/assignment.routes');
-
-// Import error handler
 const errorHandler = require('./middleware/error.middleware');
 
 // Initialize Express app
 const app = express();
 
-// ============================================
-// MIDDLEWARE CONFIGURATION
-// ============================================
+/* ============================================================
+   RAILWAY-REQUIRED FAST HEALTH ROUTES (must be before middleware)
+   ============================================================ */
 
-// Security middleware
-// app.use(helmet());
+// Instant response for Railway root health-check
+app.get('/', (req, res) => res.send("OK"));
 
+// Simple ping
+app.get('/ping', (req, res) => res.send("pong"));
+
+/* ============================================================
+   MIDDLEWARE
+   ============================================================ */
+
+// Security
 app.use(
   helmet({
     crossOriginResourcePolicy: false,
   })
 );
 
-// CORS configuration
-// app.use(cors({
-//   origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
-//   credentials: true
-// }));
+// CORS
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://mercury_admin.in",
+      "https://mercury-admin-frontend.vercel.app",
+      "https://mercuryadmin-production.up.railway.app"
+    ],
+    credentials: true,
+  })
+);
 
-app.use(cors({
-  origin: [
-    "http://localhost:5173",                         // Vite local
-    "https://mercury_admin.in",                      // your custom domain
-    "https://mercury-admin-frontend.vercel.app",  // <-- change once you have domain
-    "https://mercuryadmin-production.up.railway.app" // Railway API domain
-  ],
-  credentials: true
-}));
-
-// Body parser middleware
+// Body parsing
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Compression middleware
+// Compression
 app.use(compression());
 
-// Logging middleware
-if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
-} else {
-  app.use(morgan('combined'));
-}
+// Logging
+app.use(morgan('combined'));
 
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
-  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100,
-  message: 'Too many requests from this IP, please try again later.',
-  standardHeaders: true,
-  legacyHeaders: false,
-});
-app.use('/api/', limiter);
+// Rate Limiter (Only for API routes)
+app.use(
+  '/api/',
+  rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 200,
+  })
+);
 
-// Static files for uploads
+// Static uploaded files
 app.use('/uploads', express.static('uploads'));
 
-// ============================================
-// DATABASE CONNECTION
-// ============================================
+/* ============================================================
+   DATABASE CONNECTION (called after server starts)
+   ============================================================ */
 
-const connectDB = async () => {
+async function connectDB() {
   try {
-    const conn = await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-
+    const conn = await mongoose.connect(process.env.MONGO_URI);
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
     console.log(`📊 Database: ${conn.connection.name}`);
-  } catch (error) {
-    console.error(`❌ MongoDB Connection Error: ${error.message}`);
-    process.exit(1);
+  } catch (err) {
+    console.error(`❌ MongoDB Connection Error: ${err.message}`);
   }
-};
+}
 
-// Connect to database
+/* ============================================================
+   API ROUTES
+   ============================================================ */
 
-// ============================================
-// API ROUTES
-// ============================================
-
-// Health check
 app.get('/api/health', (req, res) => {
   res.status(200).json({
     success: true,
     message: 'Mercury Mystery Admin API is running',
-    timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV,
-    database: mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected'
+    database: mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected',
   });
 });
 
-// API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/auditors', auditorRoutes);
 app.use('/api/audits', auditRoutes);
@@ -128,70 +114,51 @@ app.use('/api/reports', reportRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/assignments', assignmentRoutes);
 
-// Root route
-app.get('/', (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: 'Welcome to Mercury Mystery Admin API',
-    version: '1.0.0',
-    documentation: '/api/health'
-  });
-});
-
 // 404 handler
 app.use((req, res) => {
   res.status(404).json({
     success: false,
     message: 'Route not found',
-    path: req.originalUrl
+    path: req.originalUrl,
   });
 });
 
-// Error handling middleware (must be last)
+// Global error handler
 app.use(errorHandler);
 
-// ============================================
-// SERVER STARTUP
-// ============================================
+/* ============================================================
+   SERVER STARTUP
+   ============================================================ */
 
 const PORT = process.env.PORT || 5002;
 
-// const server = app.listen(PORT, () => {
-//   console.log('\n' + '='.repeat(50));
-//   console.log('🚀 Mercury Mystery Admin Backend Server');
-//   console.log('='.repeat(50));
-//   console.log(`📡 Server running on port: ${PORT}`);
-//   console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-//   console.log(`🔗 API Base URL: http://localhost:${PORT}/api`);
-//   console.log(`📊 Health Check: http://localhost:${PORT}/api/health`);
-//   console.log('='.repeat(50) + '\n');
-// });
 const server = app.listen(PORT, "0.0.0.0", () => {
   console.log('\n' + '='.repeat(50));
-  console.log('🚀 Mercury Mystery Admin Backend Server');
+  console.log('🚀 Mercury Mystery Admin Backend Server Started');
   console.log('='.repeat(50));
-  console.log(`📡 Server running on port: ${PORT}`);
+  console.log(`📡 Listening on 0.0.0.0:${PORT}`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`🔗 API Base URL: https://mercuryadmin-production.up.railway.app/api`);
+  console.log(`🔗 Base API URL: https://mercuryadmin-production.up.railway.app/api`);
   console.log(`📊 Health Check: https://mercuryadmin-production.up.railway.app/api/health`);
   console.log('='.repeat(50) + '\n');
-  connectDB();
 
+  // Connect DB AFTER server start
+  connectDB();
 });
 
-// Handle unhandled promise rejections
+/* ============================================================
+   PROCESS HANDLERS
+   ============================================================ */
 process.on('unhandledRejection', (err) => {
   console.error(`❌ Unhandled Rejection: ${err.message}`);
   server.close(() => process.exit(1));
 });
 
-// Handle SIGTERM
 process.on('SIGTERM', () => {
-  console.log('👋 SIGTERM received, shutting down gracefully');
+  console.log('👋 SIGTERM received, shutting down gracefully...');
   server.close(() => {
     console.log('✅ Process terminated');
   });
 });
-
 
 module.exports = app;
