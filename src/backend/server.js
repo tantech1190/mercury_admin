@@ -151,14 +151,24 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 5002;
 
-const server = app.listen(PORT, () => {
+// const server = app.listen(PORT, () => {
+//   console.log('\n' + '='.repeat(50));
+//   console.log('🚀 Mercury Mystery Admin Backend Server');
+//   console.log('='.repeat(50));
+//   console.log(`📡 Server running on port: ${PORT}`);
+//   console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+//   console.log(`🔗 API Base URL: http://localhost:${PORT}/api`);
+//   console.log(`📊 Health Check: http://localhost:${PORT}/api/health`);
+//   console.log('='.repeat(50) + '\n');
+// });
+const server = app.listen(PORT, "0.0.0.0", () => {
   console.log('\n' + '='.repeat(50));
   console.log('🚀 Mercury Mystery Admin Backend Server');
   console.log('='.repeat(50));
   console.log(`📡 Server running on port: ${PORT}`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`🔗 API Base URL: http://localhost:${PORT}/api`);
-  console.log(`📊 Health Check: http://localhost:${PORT}/api/health`);
+  console.log(`🔗 API Base URL: https://mercuryadmin-production.up.railway.app/api`);
+  console.log(`📊 Health Check: https://mercuryadmin-production.up.railway.app/api/health`);
   console.log('='.repeat(50) + '\n');
 });
 
