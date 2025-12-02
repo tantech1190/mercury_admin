@@ -33,7 +33,13 @@ const app = express();
 // ============================================
 
 // Security middleware
-app.use(helmet());
+// app.use(helmet());
+
+app.use(
+  helmet({
+    crossOriginResourcePolicy: false,
+  })
+);
 
 // CORS configuration
 // app.use(cors({
@@ -185,5 +191,6 @@ process.on('SIGTERM', () => {
     console.log('✅ Process terminated');
   });
 });
+
 
 module.exports = app;
