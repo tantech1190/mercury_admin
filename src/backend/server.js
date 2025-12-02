@@ -35,8 +35,18 @@ const app = express();
 app.use(helmet());
 
 // CORS configuration
+// app.use(cors({
+//   origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+//   credentials: true
+// }));
+
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+  origin: [
+    "http://localhost:5173",                         // Vite local
+    "https://mercury_admin.in",                      // your custom domain
+    "https://mercury-admin-frontend.vercel.app",  // <-- change once you have domain
+    "https://mercuryadmin-production.up.railway.app" // Railway API domain
+  ],
   credentials: true
 }));
 

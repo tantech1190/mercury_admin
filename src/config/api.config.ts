@@ -6,8 +6,9 @@
 
 export const API_CONFIG = {
   // Base API URL - Change this if your backend is running on a different port or host
-  BASE_URL: 'http://localhost:5002/api',
-  
+  // BASE_URL: 'http://localhost:5002/api',
+  BASE_URL: 'https://mercuryadmin-production.up.railway.app/api',
+
   // Timeout for API requests (in milliseconds)
   TIMEOUT: 30000,
   
