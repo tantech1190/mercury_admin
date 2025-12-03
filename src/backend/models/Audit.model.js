@@ -278,6 +278,7 @@ auditSchema.statics.getAnalytics = async function() {
     }
   ]);
   
+  
   return analytics[0];
 };
 
