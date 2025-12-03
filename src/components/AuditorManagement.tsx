@@ -320,7 +320,6 @@ export function AuditorManagement() {
     setRefreshing(true);
     await Promise.all([fetchAuditors(), fetchAuditorsFromAudits(), calculateAuditorMetrics()]);
     setRefreshing(false);
-    toast.success('✅ Data refreshed!');
   };
 
 

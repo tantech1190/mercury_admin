@@ -10,7 +10,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const compression = require('compression');
-const rateLimit = require('express-rate-limit');
+// const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
 // Import routes
@@ -74,14 +74,14 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // Rate limiting
-const limiter = rateLimit({
-  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
-  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100,
-  message: 'Too many requests from this IP, please try again later.',
-  standardHeaders: true,
-  legacyHeaders: false,
-});
-app.use('/api/', limiter);
+// const limiter = rateLimit({
+//   windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
+//   max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100,
+//   message: 'Too many requests from this IP, please try again later.',
+//   standardHeaders: true,
+//   legacyHeaders: false,
+// });
+// app.use('/api/', limiter);
 
 // Static files for uploads
 app.use('/uploads', express.static('uploads'));
