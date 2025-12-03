@@ -214,9 +214,9 @@ export function AuditorManagement() {
       console.log(`✅ Extracted ${auditorsFromAudits.length} unique auditors from audits:`, auditorsFromAudits);
       setAuditAuditors(auditorsFromAudits);
       
-      if (auditorsFromAudits.length > 0) {
-        toast.success(`🎉 Found ${auditorsFromAudits.length} auditor${auditorsFromAudits.length > 1 ? 's' : ''} from uploaded audits!`);
-      }
+      // if (auditorsFromAudits.length > 0) {
+      //   toast.success(`🎉 Found ${auditorsFromAudits.length} auditor${auditorsFromAudits.length > 1 ? 's' : ''} from uploaded audits!`);
+      // }
     } catch (error: any) {
       console.error('❌ Error fetching auditors from audits:', error);
       toast.error('Failed to load auditors from audits');
