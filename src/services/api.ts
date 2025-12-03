@@ -81,3 +81,4 @@ export const getErrorDetails = (error: any) => {
     data: error.response?.data,
   };
 };
+  
