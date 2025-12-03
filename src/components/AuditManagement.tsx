@@ -311,10 +311,10 @@ export function AuditManagement({
         
         // Don't show modal - just show enhanced toast notifications
         if (result.failed > 0) {
-          toast.error(
-            `❌ Saved ${result.success}/${newAudits.length} audits to database. ${result.failed} failed (check console for details)`,
-            { duration: 10000 }
-          );
+          // toast.error(
+          //   `❌ Saved ${result.success}/${newAudits.length} audits to database. ${result.failed} failed (check console for details)`,
+          //   { duration: 10000 }
+          // );
           console.error('❌ Failed uploads:', result.errors);
         } else if (result.success < newAudits.length) {
           // Some audits silently failed (probably duplicates)
