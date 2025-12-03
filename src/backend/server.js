@@ -92,7 +92,7 @@ app.use('/uploads', express.static('uploads'));
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI, {
+    const conn = await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
@@ -168,8 +168,8 @@ const server = app.listen(PORT, () => {
   console.log('='.repeat(50));
   console.log(`📡 Server running on port: ${PORT}`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`🔗 API Base URL: ${PUBLIC_URL}/api`);
-  console.log(`📊 Health Check: ${PUBLIC_URL}/api/health`);
+  console.log(`🔗 API Base URL: http://localhost:${PORT}/api`);
+  console.log(`📊 Health Check: http://localhost:${PORT}/api/health`);
   console.log('='.repeat(50) + '\n');
 });
 
