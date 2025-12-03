@@ -160,15 +160,19 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 5002;
 
 const server = app.listen(PORT, () => {
+  const PUBLIC_URL =
+    process.env.PUBLIC_URL || `http://localhost:${PORT}`;
+
   console.log('\n' + '='.repeat(50));
   console.log('🚀 Mercury Mystery Admin Backend Server');
   console.log('='.repeat(50));
   console.log(`📡 Server running on port: ${PORT}`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`🔗 API Base URL: http://localhost:${PORT}/api`);
-  console.log(`📊 Health Check: http://localhost:${PORT}/api/health`);
+  console.log(`🔗 API Base URL: ${PUBLIC_URL}/api`);
+  console.log(`📊 Health Check: ${PUBLIC_URL}/api/health`);
   console.log('='.repeat(50) + '\n');
 });
+
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err) => {
