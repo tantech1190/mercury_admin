@@ -906,11 +906,9 @@ STR004,West Center Store,Gujarat,xfe,Guj,2024-12-25`;
                         {uploadResult.success}
                       </div>
                       <div className="text-sm mb-1" style={{ color: '#6B7280', fontWeight: '700' }}>
-                        ✅ Successfully Saved
+                        Successfully Saved
                       </div>
-                      <div className="text-xs" style={{ color: '#9CA3AF' }}>
-                        to MongoDB
-                      </div>
+                     
                     </div>
                     
                     <div className="bg-white rounded-xl p-5 text-center shadow-md border border-red-200">
@@ -918,7 +916,7 @@ STR004,West Center Store,Gujarat,xfe,Guj,2024-12-25`;
                         {uploadResult.failed}
                       </div>
                       <div className="text-sm mb-1" style={{ color: '#6B7280', fontWeight: '700' }}>
-                        ❌ Failed to Save
+                        Failed to Save
                       </div>
                       <div className="text-xs" style={{ color: '#9CA3AF' }}>
                         database errors
