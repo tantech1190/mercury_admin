@@ -318,15 +318,15 @@ export function AuditManagement({
           console.error('❌ Failed uploads:', result.errors);
         } else if (result.success < newAudits.length) {
           // Some audits silently failed (probably duplicates)
-          toast.warning(
-            `⚠️ Saved ${result.success}/${newAudits.length} audits to database. ${newAudits.length - result.success} were skipped (likely duplicates)`,
-            { duration: 10000 }
-          );
+          // toast.warning(
+          //   `⚠️ Saved ${result.success}/${newAudits.length} audits to database. ${newAudits.length - result.success} were skipped (likely duplicates)`,
+          //   { duration: 10000 }
+          // );
         } else {
-          toast.success(
-            `✅ Successfully saved ${result.success} audits to database! (${typeBreakdown})`,
-            { duration: 7000 }
-          );
+          // toast.success(
+          //   `✅ Successfully saved ${result.success} audits to database! (${typeBreakdown})`,
+          //   { duration: 7000 }
+          // );
         }
 
         // Close the bulk upload panel
