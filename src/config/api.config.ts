@@ -6,9 +6,9 @@
 
 export const API_CONFIG = {
   // Base API URL - Change this if your backend is running on a different port or host
-    BASE_URL: 'http://localhost:5002/api',
+    // BASE_URL: 'http://localhost:5002/api',
 
-  // BASE_URL: import.meta.env.VITE_API_URL,
+  BASE_URL: import.meta.env.VITE_API_URL,
 
   // Timeout for API requests (in milliseconds)
   TIMEOUT: 30000,
